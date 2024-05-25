@@ -11,6 +11,7 @@
 	<groupId>com.finalyear</groupId>
 	<artifactId>VolunteeringSystm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>VolunteeringSystm</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
