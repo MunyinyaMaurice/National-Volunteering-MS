@@ -34,5 +34,5 @@ public class Task {
     private Date finish_date;
 
     @OneToMany(mappedBy = "task")
-    private List<VolunteerPerformance> taskPerformed;
+    private List<AssignedTask> taskPerformed;
 }

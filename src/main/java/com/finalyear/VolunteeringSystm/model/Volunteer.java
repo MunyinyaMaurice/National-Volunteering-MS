@@ -1,6 +1,8 @@
 package com.finalyear.VolunteeringSystm.model;
 
 
+//import com.finalyear.VolunteeringSystm.model.compositePrimaryKey.VolunteerId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,22 +19,26 @@ import java.util.List;
 @Entity
 
 public class Volunteer {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @OneToOne
+//    @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne()
+    @JsonIgnore
     @JoinColumn(name = "dept_id")
     private Department department;
 
+    private boolean isActive;
+
     private Role role;
 
-    @OneToMany(mappedBy = "volunteer")
-    private List<VolunteerPerformance> performances;
+    @OneToMany(mappedBy = "volunteer",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignedTask> performances;
 }
 
 

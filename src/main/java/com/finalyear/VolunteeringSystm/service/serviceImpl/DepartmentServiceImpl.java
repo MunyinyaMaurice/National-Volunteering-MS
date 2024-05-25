@@ -21,10 +21,11 @@ public class DepartmentServiceImpl {
     public Department createDepartment(Integer hospital_id,DepartmentDto departmentDto){
         Hospital hospital = hospitalRepository.findById(hospital_id)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Hospital not found"));
-        try{
+
             if (departmentRepository.existsByName(departmentDto.getName())) {
                 throw new ApplicationException(ErrorCode.CONFLICT, "Department name is already taken");
             }
+        try{
             Department dept = Department.builder()
                     .name(departmentDto.getName())
                     .DepartmentRequirements(departmentDto.getRequired_skills())

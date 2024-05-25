@@ -13,7 +13,6 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(errorCode, ex.getMessage());
         return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorCode errorCode = ErrorCode.SERVER_ERROR;

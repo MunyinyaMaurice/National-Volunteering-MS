@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     private String homeAddress;
 
-    private int age;
+    private Integer age;
 
     private String gender;
 
@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Qualification> qualificationList;
 

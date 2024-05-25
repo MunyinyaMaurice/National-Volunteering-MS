@@ -16,7 +16,7 @@ public class UserDto {
     @Email
     private String email;
     @NotNull @NotBlank
-    private String age;
+    private Integer age;
     @NotNull @NotBlank
     private String gender;
     @NotNull @NotBlank

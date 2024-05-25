@@ -68,6 +68,7 @@ public class DepartmentController {
                     .body(new ErrorResponse(e.getErrorCode(), e.getMessage()));
         }
     }
+    @DeleteMapping("/{dept_id}")
     public ResponseEntity<?> deleteDepartment(@PathVariable Integer dept_id){
         try {
             departmentServiceImpl.deleteDepartmentById(dept_id);

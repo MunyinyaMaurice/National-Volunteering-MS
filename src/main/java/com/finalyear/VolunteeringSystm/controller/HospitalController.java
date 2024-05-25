@@ -69,6 +69,7 @@ public class HospitalController {
                     .body(new ErrorResponse(e.getErrorCode(), e.getMessage()));
         }
     }
+    @DeleteMapping("/{hosp_id}")
     public ResponseEntity<?> deleteHospital(@PathVariable Integer hosp_id){
         try {
               hospitalService.deleteHospitalById(hosp_id);

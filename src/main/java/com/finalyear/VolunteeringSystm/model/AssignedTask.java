@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "vol_performance")
+@Table(name = "vol_AssignedTask")
 @Entity
 
-public class VolunteerPerformance {
+public class AssignedTask {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;

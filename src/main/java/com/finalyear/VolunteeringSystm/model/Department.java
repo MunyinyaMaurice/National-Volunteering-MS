@@ -33,15 +33,15 @@ public class Department {
     @Column(name = "required_skills")
     private List<String> DepartmentRequirements;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Volunteer> volunteers;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerCoordinator> vol_coordinators;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OpenPosition> openPositions;
 }

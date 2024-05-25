@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not found"),
     CONFLICT(HttpStatus.CONFLICT, "Resource already exists"),
-    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "Validation Failed"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized"),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "Forbidden");
 
     private final HttpStatus httpStatus;
     private final String message;

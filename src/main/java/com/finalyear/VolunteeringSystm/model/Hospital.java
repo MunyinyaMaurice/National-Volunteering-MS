@@ -37,7 +37,7 @@ public class Hospital {
     @Column(unique = true, nullable = false)
     private String telPhone;
 
-    @OneToMany(mappedBy = "hospital")
+    @OneToMany(mappedBy = "hospital",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Department> department;
 }
