@@ -22,16 +22,16 @@ public class RegisterRequest {
     @NotNull
     private String lastName;
 
-    @NotNull
-    private int age;
-    @NotNull
-    private String gender;
-    @NotNull
-    private String status;
+//    @NotNull
+//    private int age;
+//    @NotNull
+//    private String gender;
+//    @NotNull
+//    private String status;
     @NotNull
     private String telPhone;
-    @NotNull
-    private String homeAddress;
+//    @NotNull
+//    private String homeAddress;
 
     @NotNull @NotBlank
     @Email

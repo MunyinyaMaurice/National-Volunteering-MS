@@ -1,4 +1,7 @@
 package com.finalyear.VolunteeringSystm.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,19 +17,20 @@ import lombok.NoArgsConstructor;
 
 public class AssignedTask {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "vol_id")
-    private Volunteer volunteer;
+    private User user;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "task_id")
     private Task task;
 
-    @Column (name = "task_status")
-    private TaskStatus taskStatus;
-
+    // @Column (name = "task_status")
+    // private TaskStatus taskStatus;
 
 }

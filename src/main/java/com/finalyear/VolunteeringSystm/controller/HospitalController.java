@@ -56,8 +56,8 @@ public class HospitalController {
                 .body(new ErrorResponse(e.getErrorCode(), e.getMessage()));
     }
     }
-    @PutMapping("/{hospitalId}")
-    public ResponseEntity<?> updateHospital(Integer hosp_id, @Valid @RequestBody HospitalDto hospitalDto, BindingResult bindingResult) {
+    @PutMapping("/{hosp_id}")
+    public ResponseEntity<?> updateHospital(@PathVariable Integer hosp_id, @Valid @RequestBody HospitalDto hospitalDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return handleValidationErrors.handleValidationErrors(bindingResult);
         }

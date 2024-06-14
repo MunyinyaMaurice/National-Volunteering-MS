@@ -17,6 +17,10 @@ public class HospitalServiceImpl {
     private final HospitalRepository hospitalRepository;
 
     public Hospital createHospital(HospitalDto hospitalDto) {
+        if(hospitalDto.getName() ==null || hospitalDto.getLocation() == null
+        || hospitalDto.getTelPhone() == null || hospitalDto.getEmail() ==null){
+            throw new ApplicationException(ErrorCode.BAD_REQUEST,"All fields are required");
+        }
         try {
             if (hospitalRepository.existsByEmail(hospitalDto.getEmail())) {
                 throw new ApplicationException(ErrorCode.CONFLICT, "Email provided is already taken");
@@ -44,6 +48,9 @@ public class HospitalServiceImpl {
     }
 
     public Hospital updateHospital(Integer hosp_id, HospitalDto hospitalDto) {
+        if(hosp_id ==null){
+            throw new ApplicationException(ErrorCode.BAD_REQUEST,"Hospital id is required");
+        }
             Hospital existingHospital = hospitalRepository.findById(hosp_id)
                     .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Hospital is not found"));
 

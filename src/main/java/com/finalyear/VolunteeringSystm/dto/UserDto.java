@@ -15,14 +15,14 @@ public class UserDto {
     private String lastName;
     @Email
     private String email;
-    @NotNull @NotBlank
-    private Integer age;
-    @NotNull @NotBlank
-    private String gender;
-    @NotNull @NotBlank
-    private String status;
-    @NotNull @NotBlank
-    private String homeAddress;
+//    @NotNull @NotBlank
+//    private Integer age;
+//    @NotNull @NotBlank
+//    private String gender;
+//    @NotNull @NotBlank
+//    private String status;
+//    @NotNull @NotBlank
+//    private String homeAddress;
     @NotNull @NotBlank
     private String telPhone;
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^&*()-+=]).{6,14}$",

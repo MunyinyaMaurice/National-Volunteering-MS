@@ -11,13 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto {
-    @NotNull
-    @NotBlank
+//    @NotNull
+//    @NotBlank
     private String name;
-    @NotNull
-    @NotBlank
-    private Integer hospital_id;
-    @NotNull
-    @NotBlank
+//    @NotNull
+//    @NotBlank
     private List<String> required_skills;
 }

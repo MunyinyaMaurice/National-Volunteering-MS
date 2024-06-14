@@ -19,9 +19,15 @@ public class DepartmentServiceImpl {
     private final HospitalRepository hospitalRepository;
 
     public Department createDepartment(Integer hospital_id,DepartmentDto departmentDto){
+        if(hospital_id ==null){
+            throw new ApplicationException(ErrorCode.BAD_REQUEST,"Hospital id is required");
+        }
         Hospital hospital = hospitalRepository.findById(hospital_id)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Hospital not found"));
 
+        if(departmentDto.getName() ==null || departmentDto.getRequired_skills() == null){
+            throw new ApplicationException(ErrorCode.BAD_REQUEST,"All fields are required");
+        }
             if (departmentRepository.existsByName(departmentDto.getName())) {
                 throw new ApplicationException(ErrorCode.CONFLICT, "Department name is already taken");
             }
@@ -37,10 +43,11 @@ public class DepartmentServiceImpl {
         }
     }
     public Department updateDepartment(Integer dept_id ,DepartmentDto departmentDto){
+        if(dept_id ==null){
+            throw new ApplicationException(ErrorCode.BAD_REQUEST,"Department id is required");
+        }
         Department existingDepartment = departmentRepository.findById(dept_id)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Department not found"));
-        Hospital existingHospital = hospitalRepository.findById(departmentDto.getHospital_id())
-                .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Hospital not found"));
 
             if (departmentDto.getName() != null) {
                 if (!departmentRepository.existsByName(departmentDto.getName())) {
@@ -49,14 +56,15 @@ public class DepartmentServiceImpl {
                     throw new ApplicationException(ErrorCode.CONFLICT, "Name provided is already taken");
                 }
             }
-//        try{
-            if (departmentDto.getHospital_id() != null) {
-                existingDepartment.setHospital(existingHospital);
+            try {
+                if (departmentDto.getRequired_skills() != null) {
+                    existingDepartment.setDepartmentRequirements(departmentDto.getRequired_skills());
+                }
+                return departmentRepository.save(existingDepartment);
+            }catch (ApplicationException e){
+                throw new ApplicationException(ErrorCode.SERVER_ERROR);
             }
-            if (departmentDto.getRequired_skills() != null) {
-                existingDepartment.setDepartmentRequirements(departmentDto.getRequired_skills());
-            }
-          return departmentRepository.save(existingDepartment);
+
 
 }
     public List<Department> getDepartments() {

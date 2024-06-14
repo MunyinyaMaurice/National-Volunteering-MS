@@ -1,27 +1,38 @@
 package com.finalyear.VolunteeringSystm.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jdk.jfr.Timestamp;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "qualifications")
+@Table(name = "applicant_details")
 @Entity
-public class Qualification {
+public class ApplicantDetails {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
     private long nationalId;
     private long degreeId;
-    @Column(name = "major_focus")
     private String majorFocus;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "dept_id")
+    private Department department;
+
+    // @Timestamp
+    // private Date submitedAt;
 }

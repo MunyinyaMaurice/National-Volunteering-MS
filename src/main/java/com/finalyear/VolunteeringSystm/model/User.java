@@ -1,23 +1,23 @@
 package com.finalyear.VolunteeringSystm.model;
 
-        import java.util.Collection;
-        import java.util.List;
+import java.util.Collection;
+import java.util.List;
 
-        import com.fasterxml.jackson.annotation.JsonIgnore;
-        import org.springframework.security.core.GrantedAuthority;
-        import org.springframework.security.core.userdetails.UserDetails;
-        import jakarta.persistence.GenerationType;
-        import jakarta.persistence.*;
-        import lombok.AllArgsConstructor;
-        import lombok.Builder;
-        import lombok.Data;
-        import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "applicant")
+@Table(name = "users")
 @Entity
 public class User implements UserDetails {
     @Id
@@ -30,28 +30,21 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String telPhone;
-
-    private String homeAddress;
-
-    private Integer age;
-
-    private String gender;
-
-    private String status;
 
     private String password;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Qualification> qualificationList;
+    private List<ApplicantDetails> applicantDetails;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Volunteer> volunteers;
+    private List<AssignedTask> assignedTasks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
