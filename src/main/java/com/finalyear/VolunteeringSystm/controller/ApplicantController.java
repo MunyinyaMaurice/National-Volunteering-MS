@@ -1,5 +1,6 @@
 package com.finalyear.VolunteeringSystm.controller;
 
+import com.finalyear.VolunteeringSystm.dto.ApplicantDetailsDto;
 import com.finalyear.VolunteeringSystm.dto.ApplicantDto;
 import com.finalyear.VolunteeringSystm.exceptionHandler.ApplicationException;
 import com.finalyear.VolunteeringSystm.exceptionHandler.ErrorResponse;
@@ -26,15 +27,15 @@ public class ApplicantController {
     private final HandleValidationErrors handleValidationErrors;
     private final ApplicantServiceImpl applicantServiceImpl;
 
-    @PostMapping
-    public ResponseEntity<?> saveApplication(@Valid @RequestBody ApplicantDto applicantDto,
+    @PostMapping("/{positionId}")
+    public ResponseEntity<?> saveApplication(Integer positionId,@Valid @RequestBody ApplicantDto applicantDto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return handleValidationErrors.handleValidationErrors(bindingResult);
         }
         try {
-            ApplicantDto applicantDto1 = applicantServiceImpl.createApplication(applicantDto);
-            return ResponseEntity.ok(applicantDto1);
+            ApplicantDto applied = applicantServiceImpl.createApplication(positionId,applicantDto);
+            return ResponseEntity.ok(applied);
         } catch (ApplicationException e) {
             return ResponseEntity.status(e.getErrorCode().getHttpStatus())
                     .body(new ErrorResponse(e.getErrorCode(), e.getMessage()));
@@ -42,8 +43,13 @@ public class ApplicantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicantDto>> getApplicants() {
-        List<ApplicantDto> applicants = applicantServiceImpl.getApplicants();
+    public ResponseEntity<List<ApplicantDetailsDto>> getApplicants() {
+        List<ApplicantDetailsDto> applicants = applicantServiceImpl.findAllApplicantsInfo();
+        return ResponseEntity.ok(applicants);
+    }
+    @GetMapping("activeApplicants")
+    public ResponseEntity<List<ApplicantDetailsDto>> findCurrentlyActiveApplicantsInfo() {
+        List<ApplicantDetailsDto> applicants = applicantServiceImpl.findCurrentlyActiveApplicantsInfo();
         return ResponseEntity.ok(applicants);
     }
 

@@ -20,6 +20,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.finalyear.VolunteeringSystm.security.config.ApplicationConfig.getCurrentUser;
+
 @Service
 @RequiredArgsConstructor
 public class AssignedTaskImpl {
@@ -72,8 +74,18 @@ public class AssignedTaskImpl {
     }
 
     public List<VolunteerAssignedTaskDto> getAllAssignedTasksWithUserDetails() {
+        User currentUser = getCurrentUser();
+        if(currentUser != null){
+        if (currentUser.getRole() != Role.SUPER_ADMIN && currentUser.getRole() != Role.ADMIN
+                && currentUser.getRole() != Role.COORDINATOR) {
+            throw new ApplicationException(ErrorCode.UNAUTHORIZED,
+                    "You do not have permission this info");
+        }
         List<Object[]> results = assignedTaskRepository.findAllAssignedTasksWithUserDetails();
         return results.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+        throw new ApplicationException(ErrorCode.UNAUTHORIZED,
+                "You are not logged-in");
     }
 
     private VolunteerAssignedTaskDto convertToDto(Object[] result) {

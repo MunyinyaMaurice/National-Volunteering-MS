@@ -102,28 +102,6 @@ public class TaskServiceImp {
 
     }
 
-    // THIS METHOD WILL MAKE SURE THAT EVERY 1 MUNITES IF THE IS CHANGE IN WILL
-    // UPDATE TASK STATUS
-    @Scheduled(fixedRate = 60000) // Run every 60 seconds
-    public void updateTaskStatus() {
-        List<Task> tasks = taskRepository.findAll();
-        LocalDate currentDate = LocalDate.now();
-        LocalTime currentTime = LocalTime.now();
-
-        for (Task task : tasks) {
-            if (task.getStartDate().isEqual(currentDate)) {
-                if (task.getStartTime().isBefore(currentTime) && task.getFinishTime().isAfter(currentTime)) {
-                    task.setStatus(TaskStatus.NOW);
-                } else if (task.getFinishTime().isBefore(currentTime)) {
-                    task.setStatus(TaskStatus.ENDED);
-                }
-            } else if (task.getStartDate().isBefore(currentDate)) {
-                task.setStatus(TaskStatus.ENDED);
-            }
-            taskRepository.save(task);
-        }
-    }
-
     public List<Task> getTasks() {
         return taskRepository.findAll();
     }

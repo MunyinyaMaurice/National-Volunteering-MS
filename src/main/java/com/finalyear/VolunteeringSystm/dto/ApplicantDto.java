@@ -17,8 +17,8 @@ import jakarta.validation.constraints.Email;
 @AllArgsConstructor
 public class ApplicantDto {
   // @NotNull
-  private Integer userId;
-  private Integer departmentId;
+//  private Integer userId;
+//  private Integer departmentId;
   private String firstName;
   // @NotNull
   private String lastName;
@@ -26,7 +26,7 @@ public class ApplicantDto {
   private String telPhone;
   @Email
   private String email;
-  private Role role;
+//  private Role role;
   // @NotNull
   private long nationalId;
   // @NotNull

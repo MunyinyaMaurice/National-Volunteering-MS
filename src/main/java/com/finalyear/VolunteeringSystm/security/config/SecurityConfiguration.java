@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                         "/api/applicants/**",
                         "/api/volunteers/**",
                         "/api/tasks/**",
+                        "/api/positions/**",
                         "/api/assignedTasks/**",
                         // LIST OF AUTHORIZED SWAGGER URLs
                         "/v2/api-docs",

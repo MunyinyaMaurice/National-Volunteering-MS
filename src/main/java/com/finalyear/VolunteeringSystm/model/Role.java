@@ -13,54 +13,58 @@ import static com.finalyear.VolunteeringSystm.model.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {
-    VOLUNTEER(
-            Set.of(
-                    VOLUNTEER_READ,
-                    VOLUNTEER_UPDATE,
-                    VOLUNTEER_ORDER
-            )
-    ),
-    COORDINATOR(
-            Set.of(
-                    COORDINATOR_READ,
-                    COORDINATOR_UPDATE,
-                    COORDINATOR_DELETE,
-                    COORDINATOR_CREATE
-            )
-    ),
-    ADMIN(
-            Set.of(
-                    ADMIN_READ,
-                    ADMIN_UPDATE,
-                    ADMIN_DELETE,
-                    ADMIN_CREATE,
-                    COORDINATOR_READ,
-                    COORDINATOR_UPDATE,
-                    COORDINATOR_DELETE,
-                    COORDINATOR_CREATE
-            )
-    ),
-    APPLICANT(
-            Set.of(
-                    APPLICANT_READ,
-                    APPLICANT_UPDATE,
-                    APPLICANT_ORDER
-            )
-    );
+        VOLUNTEER(
+                        Set.of(
+                                        VOLUNTEER_READ,
+                                        VOLUNTEER_UPDATE,
+                                        VOLUNTEER_ORDER)),
+        COORDINATOR(
+                        Set.of(
+                                        COORDINATOR_READ,
+                                        COORDINATOR_UPDATE,
+                                        COORDINATOR_DELETE,
+                                        COORDINATOR_CREATE)),
+        ADMIN(
+                        Set.of(
+                                        ADMIN_READ,
+                                        ADMIN_UPDATE,
+                                        ADMIN_DELETE,
+                                        ADMIN_CREATE,
+                                        COORDINATOR_READ,
+                                        COORDINATOR_UPDATE,
+                                        COORDINATOR_DELETE,
+                                        COORDINATOR_CREATE)),
+        SUPER_ADMIN(
+                        Set.of(
+                                        ADMIN_READ,
+                                        ADMIN_UPDATE,
+                                        ADMIN_DELETE,
+                                        ADMIN_CREATE,
+                                        COORDINATOR_READ,
+                                        COORDINATOR_UPDATE,
+                                        COORDINATOR_DELETE,
+                                        COORDINATOR_CREATE)),
+        APPLICANT(
+                        Set.of(
+                                        APPLICANT_READ,
+                                        APPLICANT_UPDATE
+                        // APPLICANT_CREATE
 
-    public static boolean hasRole(Set<Role> roles, Role role) {
-        return roles.contains(role);
-    }
+                        ));
 
-    @Getter
-    private final Set<Permission> permissions;
+        public static boolean hasRole(Set<Role> roles, Role role) {
+                return roles.contains(role);
+        }
 
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        var authorities = getPermissions()
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
-    }
+        @Getter
+        private final Set<Permission> permissions;
+
+        public List<SimpleGrantedAuthority> getAuthorities() {
+                var authorities = getPermissions()
+                                .stream()
+                                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                                .collect(Collectors.toList());
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+                return authorities;
+        }
 }

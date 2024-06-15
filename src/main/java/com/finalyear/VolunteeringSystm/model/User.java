@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<ApplicantDetails> applicantDetails;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Staff> staffMembers;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<AssignedTask> assignedTasks;
