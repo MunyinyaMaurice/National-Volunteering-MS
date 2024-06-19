@@ -32,6 +32,11 @@ public class ApplicantDetails {
     @JsonIgnore
     @JoinColumn(name = "dept_id")
     private Department department;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "open_position_id")
+    private OpenPosition openPosition;
+
 
     // @Timestamp
     // private Date submitedAt;

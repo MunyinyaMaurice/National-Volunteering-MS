@@ -16,9 +16,6 @@ import jakarta.validation.constraints.Email;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicantDto {
-  // @NotNull
-//  private Integer userId;
-//  private Integer departmentId;
   private String firstName;
   // @NotNull
   private String lastName;

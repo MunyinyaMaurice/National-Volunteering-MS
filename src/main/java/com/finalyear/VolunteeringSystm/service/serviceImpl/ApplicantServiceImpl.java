@@ -2,7 +2,6 @@ package com.finalyear.VolunteeringSystm.service.serviceImpl;
 
 import com.finalyear.VolunteeringSystm.dto.ApplicantDetailsDto;
 import com.finalyear.VolunteeringSystm.dto.ApplicantDto;
-import com.finalyear.VolunteeringSystm.dto.VolunteerAssignedTaskDto;
 import com.finalyear.VolunteeringSystm.exceptionHandler.ApplicationException;
 import com.finalyear.VolunteeringSystm.exceptionHandler.ErrorCode;
 import com.finalyear.VolunteeringSystm.model.*;
@@ -35,13 +34,33 @@ public class ApplicantServiceImpl {
     private final PasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
 
-
-
-    public ApplicantDto createApplication(Integer positionId,ApplicantDto applicantDto) {
+    public ApplicantDto createApplication(Integer positionId, ApplicantDto applicantDto) {
         OpenPosition openPosition = openPositionRepository.findById(positionId)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND)) ;
+                .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND));
+if(openPosition.getStatus() == OpenPosition.PositionStatus.ENDED){
+    throw new ApplicationException(ErrorCode.BAD_REQUEST,"This position is no long available");
+}
+
         Integer departmentId = openPosition.getDepartment().getId();
-        try {
+        long nationalId = applicantDto.getNationalId();
+
+        ApplicantDetails existingApplicantDetails = qualificationRepository.findByNationalId(nationalId);
+
+        if (existingApplicantDetails != null) {
+            OpenPosition existingOpenPosition = existingApplicantDetails.getOpenPosition();
+            if (existingOpenPosition.getDepartment().getId().equals(departmentId)
+                    && (existingOpenPosition.getStatus() == OpenPosition.PositionStatus.PENDING
+                    || existingOpenPosition.getStatus() == OpenPosition.PositionStatus.ONGOING)) {
+                throw new ApplicationException(ErrorCode.BAD_REQUEST,
+                        String.format("You are already an active volunteer or Applied for volunteering program" +
+                                        " in the department of %s ",
+                        existingOpenPosition.getDepartment().getName()));
+
+            } else if (existingOpenPosition.getStatus() == OpenPosition.PositionStatus.ENDED) {
+                saveApplicantQualifications(existingApplicantDetails.getUser().getId(), departmentId, applicantDto, openPosition);
+                return applicantDto;
+            }
+        } else {
             User applicant = User.builder()
                     .email(applicantDto.getEmail())
                     .firstName(applicantDto.getFirstName())
@@ -51,18 +70,16 @@ public class ApplicantServiceImpl {
                     .build();
 
             User savedApplicant = userRepository.save(applicant);
-
-            saveApplicantQualifications(savedApplicant.getId(), departmentId, applicantDto);
-
-            return applicantDto;
-        } catch (ApplicationException e) {
-            throw new ApplicationException(ErrorCode.SERVER_ERROR);
+            saveApplicantQualifications(savedApplicant.getId(), departmentId, applicantDto, openPosition);
         }
+
+        return applicantDto;
     }
 
-    private ApplicantDetails saveApplicantQualifications(Integer applicantId,Integer departmentId ,ApplicantDto applicantDto) {
+    private void saveApplicantQualifications(Integer applicantId, Integer departmentId, ApplicantDto applicantDto, OpenPosition openPosition) {
         User user = userRepository.findById(applicantId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND));
+
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND));
 
@@ -71,40 +88,20 @@ public class ApplicantServiceImpl {
                 .degreeId(applicantDto.getDegreeId())
                 .nationalId(applicantDto.getNationalId())
                 .department(department)
+                .openPosition(openPosition)
                 .majorFocus(applicantDto.getMajorFocus())
                 .build();
 
-        return qualificationRepository.save(qualification);
+        qualificationRepository.save(qualification);
     }
 
-//    public List<ApplicantDto> getApplicants() {
-//        List<ApplicantDetails> qualifications = qualificationRepository.findAll();
-//         return qualifications.stream().map(qualification -> {
-//         User user = qualification.getUser();
-//         Department department = qualification.getDepartment();
-//         return new ApplicantDto(
-//         user.getId(),
-//         user.getFirstName(),
-//         user.getLastName(),
-//         user.getTelPhone(),
-//         user.getEmail(),
-//         user.getRole(),
-//         department.getId(),
-//         qualification.getNationalId(),
-//         qualification.getDepartment(),
-//         qualification.getMajorFocus());
-//
-//         }).collect(Collectors.toList());
-
-
-//    }
 public List<ApplicantDetailsDto> findAllApplicantsInfo() {
     User currentUser = getCurrentUser();
     if(currentUser != null){
     if (currentUser.getRole() != Role.SUPER_ADMIN && currentUser.getRole() != Role.ADMIN
             && currentUser.getRole() != Role.COORDINATOR) {
         throw new ApplicationException(ErrorCode.UNAUTHORIZED,
-                "You do not have permission to create a position");
+                "You do not have permission to get list of applicants");
     }
 
     List<Object[]> results = qualificationRepository.findAllApplicantsInfo();

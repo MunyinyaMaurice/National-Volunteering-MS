@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -37,6 +38,9 @@ public class OpenPosition {
     @Enumerated(EnumType.STRING)
     private PositionStatus status;
 
+    @OneToMany(mappedBy = "openPosition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ApplicantDetails> applicantDetailsList;
     public enum PositionStatus {
         PENDING,
         ONGOING,

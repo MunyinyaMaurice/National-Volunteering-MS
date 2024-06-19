@@ -3,9 +3,11 @@ package com.finalyear.VolunteeringSystm.repository;
 import com.finalyear.VolunteeringSystm.model.AssignedTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public interface AssignedTaskRepository extends JpaRepository<AssignedTask, Integer> {
     @Query(value = "SELECT a.id as id, t.dep_id as departmentId, t.title as title, t.description as description, "
             + "t.start_date as startDate, t.start_time as startTime, t.finish_time as finishTime, "

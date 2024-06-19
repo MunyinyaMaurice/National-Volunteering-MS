@@ -3,6 +3,7 @@ package com.finalyear.VolunteeringSystm.repository;
 import com.finalyear.VolunteeringSystm.model.ApplicantDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,5 +30,9 @@ public interface QualificationRepository extends JpaRepository<ApplicantDetails,
             + "WHERE o.start_date <= CURRENT_DATE AND o.finish_date >= CURRENT_DATE",
             nativeQuery = true)
     List<Object[]> findCurrentlyActiveApplicantsInfo();
+    @Query("SELECT COUNT(a) > 0 FROM ApplicantDetails a WHERE a.nationalId = :nationalId")
+    boolean existsByNationalId(@Param("nationalId") long nationalId);
+    @Query("SELECT a FROM ApplicantDetails a WHERE a.nationalId = :nationalId")
+    ApplicantDetails findByNationalId(@Param("nationalId") long nationalId);
 }
 

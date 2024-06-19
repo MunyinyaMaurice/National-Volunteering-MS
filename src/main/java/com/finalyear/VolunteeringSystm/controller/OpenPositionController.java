@@ -5,10 +5,14 @@
 package com.finalyear.VolunteeringSystm.controller;
 
         import com.finalyear.VolunteeringSystm.dto.OpenPositionDto;
+        import com.finalyear.VolunteeringSystm.dto.OpenPositionInfoDto;
         import com.finalyear.VolunteeringSystm.model.OpenPosition;
         import com.finalyear.VolunteeringSystm.service.serviceImpl.OpenPositionServiceImpl;
         import lombok.RequiredArgsConstructor;
+        import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
+
+        import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +27,16 @@ public class OpenPositionController {
                                            ) {
         return openPositionServiceImpl.createPosition(departmentId,openPositionDto);
     }
+    @GetMapping
+    public List<OpenPositionInfoDto> getPendingOpenPositionsWithSkills() {
+        return openPositionServiceImpl.getPendingOpenPositionsWithSkills();
+    }
+    @GetMapping("/{openPositionId}")
+    public List<OpenPositionInfoDto> getPositionById( @PathVariable Integer openPositionId){
+        return openPositionServiceImpl.getOPenPositionById(openPositionId);
+    }
+//    @GetMapping("/{openPositionId}")
+//    public OpenPosition getPositionById( @PathVariable Integer openPositionId){
+//        return openPositionServiceImpl.getOPenPositionById(openPositionId);
+//    }
 }
